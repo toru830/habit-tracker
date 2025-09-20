@@ -74,20 +74,28 @@
 
             <!-- 統計ビュー -->
             <section class="stats-view" id="statsView" style="display: none;">
-                <h2>統計</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>連続日数</h3>
-                        <p id="streakCount">0日</p>
+
+                <!-- 合計値推移グラフ -->
+                <div class="chart-section">
+                    <h3>合計値の推移</h3>
+                    <div class="chart-container">
+                        <canvas id="totalChart" width="400" height="200"></canvas>
                     </div>
-                    <div class="stat-card">
-                        <h3>今週の完了率</h3>
-                        <p id="weeklyRate">0%</p>
+                </div>
+
+                <!-- 新しいレポートテーブル -->
+                <div class="report-table-section">
+                    <div class="report-table" id="reportTable">
+                        <!-- レポートテーブルはJavaScriptで動的に生成 -->
                     </div>
-                    <div class="stat-card">
-                        <h3>今月の完了率</h3>
-                        <p id="monthlyRate">0%</p>
-                    </div>
+                </div>
+            </section>
+
+            <!-- モンスタービュー -->
+            <section class="monster-view" id="monsterView" style="display: none;">
+                <h2>モンスター図鑑</h2>
+                <div class="monster-grid" id="monsterGrid">
+                    <!-- モンスターはJavaScriptで動的に生成 -->
                 </div>
             </section>
             
@@ -122,12 +130,9 @@
                 <span class="nav-icon">📊</span>
                 <span>レポート</span>
             </button>
-            <button class="nav-btn add-btn" id="addHabitBtn">
-                <span class="nav-icon">+</span>
-            </button>
-            <button class="nav-btn" id="historyBtn">
-                <span class="nav-icon">🕐</span>
-                <span>履歴</span>
+            <button class="nav-btn" id="monsterBtn">
+                <span class="nav-icon">👹</span>
+                <span>モンスター</span>
             </button>
             <button class="nav-btn" id="settingsBtn">
                 <span class="nav-icon">⚙️</span>
@@ -136,6 +141,7 @@
         </nav>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

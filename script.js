@@ -8,15 +8,15 @@ const habitsData = [
     { id: 'reading', name: '読書', shortName: '読書', category: '知的成長', priority: 4, reason: '思考の深さ・幅に寄与。ただし「勉強」優先。', type: 'habit' },
     
     // No系
-    { id: 'no_phone_bed', name: 'No寝る前スマホ', shortName: 'No寝前ｽﾏﾎ', category: '睡眠の質', priority: 5, reason: '睡眠の質を守る最重要因子。早寝早起きと一体。', type: 'no' },
+    { id: 'no_phone_bed', name: 'No寝る前スマホ', shortName: 'No寝ｽﾏﾎ', category: '睡眠の質', priority: 5, reason: '睡眠の質を守る最重要因子。早寝早起きと一体。', type: 'no' },
     { id: 'no_alcohol', name: 'No酒', shortName: 'No酒', category: '健康', priority: 5, reason: '睡眠・肝臓・集中力に広範な影響。長期的リスクが大きい。', type: 'no' },
     { id: 'no_overeating', name: 'No暴食', shortName: 'No暴食', category: '健康', priority: 4, reason: '健康と体重管理に影響。', type: 'no' },
     
     // サプリ・食事系
-    { id: 'protein', name: 'プロテイン', shortName: 'プロテイン', category: '栄養', priority: 4, reason: '筋トレ効果を高める。運動とセットで効力大。', type: 'supplement' },
+    { id: 'protein', name: 'プロテイン', shortName: 'ﾌﾟﾛﾃｲﾝ', category: '栄養', priority: 4, reason: '筋トレ効果を高める。運動とセットで効力大。', type: 'supplement' },
     { id: 'probiotics', name: '整腸剤', shortName: '整腸剤', category: '栄養・消化', priority: 2, reason: '腸内環境改善の補助。基本は食事で十分。', type: 'supplement' },
-    { id: 'vitamin_b', name: 'ビタミンB', shortName: 'ビタミンB', category: '栄養', priority: 3, reason: 'エネルギー代謝と神経機能に重要。', type: 'supplement' },
-    { id: 'creatine', name: 'クレアチン', shortName: 'クレアチン', category: '栄養', priority: 3, reason: '筋力と筋量の向上に効果的。', type: 'supplement' },
+    { id: 'vitamin_b', name: 'ビタミンB', shortName: 'ﾋﾞﾀﾐﾝB', category: '栄養', priority: 3, reason: 'エネルギー代謝と神経機能に重要。', type: 'supplement' },
+    { id: 'creatine', name: 'クレアチン', shortName: 'ｸﾚｱﾁﾝ', category: '栄養', priority: 3, reason: '筋力と筋量の向上に効果的。', type: 'supplement' },
     { id: 'ashwagandha', name: 'アシュワガンダ', shortName: 'ｱｼｭﾜｶﾞﾝﾀﾞ', category: '栄養', priority: 2, reason: 'ストレス軽減と睡眠の質向上。', type: 'supplement' },
     { id: 'magnesium', name: 'マグネシウム', shortName: 'ﾏｸﾞﾈｼｳﾑ', category: '栄養', priority: 2, reason: '筋肉のリラクゼーションと睡眠の質向上。', type: 'supplement' },
     { id: 'berries', name: 'ベリー', shortName: 'ベリー', category: '栄養', priority: 2, reason: '抗酸化作用などあるが補助レベル。', type: 'supplement' }
@@ -32,6 +32,21 @@ const rewards = {
     60: { title: '習慣の達人', description: '2ヶ月連続達成！', emoji: '👑' },
     100: { title: '習慣の王', description: '100日連続達成！', emoji: '🎯' },
     365: { title: '習慣の神', description: '1年連続達成！', emoji: '🌟' }
+};
+
+// モンスタータイプの定義
+const monsterTypes = {
+    0: { name: '未開封', description: 'まだ挑戦していない', emoji: '❓', color: '#666' },
+    1: { name: '弱そうな青年', description: '初心者レベル', emoji: '😊', color: '#4A90E2' },
+    2: { name: 'やる気のある青年', description: '少し成長した', emoji: '😤', color: '#28a745' },
+    3: { name: '頑張り屋', description: '継続の力', emoji: '💪', color: '#ffd700' },
+    4: { name: '努力家', description: '真面目に取り組む', emoji: '🎯', color: '#ff6b6b' },
+    5: { name: 'ちょっと強そうな青年', description: '中級者レベル', emoji: '😎', color: '#9c27b0' },
+    6: { name: '習慣マスター', description: '習慣化の達人', emoji: '🏆', color: '#ff9800' },
+    7: { name: '習慣の王', description: '完璧な習慣', emoji: '👑', color: '#e91e63' },
+    8: { name: '伝説の存在', description: '神レベルの習慣', emoji: '🌟', color: '#00bcd4' },
+    9: { name: '究極の存在', description: '究極の習慣', emoji: '⚡', color: '#795548' },
+    10: { name: '超越者', description: '人間を超越', emoji: '🚀', color: '#607d8b' }
 };
 
 // アプリの状態管理
@@ -367,7 +382,32 @@ class HabitTracker {
     // 特定の日の完了習慣数を計算
     calculateDailyTotal(date) {
         const dateStr = date.toISOString().split('T')[0];
-        return this.completedHabits[dateStr] ? this.completedHabits[dateStr].length : 0;
+        const dailyHabits = this.completedHabits[dateStr];
+        
+        // デバッグ用：日付と完了習慣を確認
+        if (dailyHabits && dailyHabits.length > 0) {
+            console.log(`日付: ${dateStr}, 完了習慣数: ${dailyHabits.length}, 習慣ID: ${dailyHabits.join(', ')}`);
+        }
+        
+        return dailyHabits ? dailyHabits.length : 0;
+    }
+
+    // 今週の合計を計算
+    calculateWeeklyTotal() {
+        let total = 0;
+        this.currentWeek.forEach(date => {
+            total += this.calculateDailyTotal(date);
+        });
+        return total;
+    }
+
+    // 全期間の合計を計算
+    calculateAllTimeTotal() {
+        let total = 0;
+        for (const dateStr in this.completedHabits) {
+            total += this.completedHabits[dateStr].length;
+        }
+        return total;
     }
 
     // 習慣の連続日数を計算（今日のチェックのみ）
@@ -417,16 +457,16 @@ class HabitTracker {
             dailyTotalRow.appendChild(dailyTotalCell);
         });
 
-        // 合計セル（空）
-        const totalCell = document.createElement('div');
-        totalCell.className = 'daily-total-cell';
-        totalCell.textContent = '';
-        dailyTotalRow.appendChild(totalCell);
+        // 週計セル（今週の合計）
+        const weeklyTotalCell = document.createElement('div');
+        weeklyTotalCell.className = 'daily-total-cell';
+        weeklyTotalCell.textContent = this.calculateWeeklyTotal();
+        dailyTotalRow.appendChild(weeklyTotalCell);
 
-        // 合計セル（空）
+        // 合計セル（全期間の合計）
         const totalAllCell = document.createElement('div');
         totalAllCell.className = 'daily-total-cell';
-        totalAllCell.textContent = '';
+        totalAllCell.textContent = this.calculateAllTimeTotal();
         dailyTotalRow.appendChild(totalAllCell);
 
     }
@@ -436,13 +476,34 @@ class HabitTracker {
         const dailyTotalCells = document.querySelectorAll('.daily-total-row .daily-total-cell');
         let cellIndex = 2; // No.と項目の後から開始
         
+        console.log('日計更新開始 - 週の日付:', this.currentWeek.map(d => d.toISOString().split('T')[0]));
+        
         this.currentWeek.forEach(date => {
+            const dateStr = date.toISOString().split('T')[0];
             const dailyTotal = this.calculateDailyTotal(date);
+            
+            console.log(`日付: ${dateStr}, 日計: ${dailyTotal}`);
+            
             if (dailyTotalCells[cellIndex]) {
                 dailyTotalCells[cellIndex].textContent = dailyTotal;
             }
             cellIndex++;
         });
+
+        // 週計を更新
+        const weeklyTotal = this.calculateWeeklyTotal();
+        console.log('週計:', weeklyTotal);
+        if (dailyTotalCells[cellIndex]) {
+            dailyTotalCells[cellIndex].textContent = weeklyTotal;
+            cellIndex++;
+        }
+
+        // 全期間合計を更新
+        const allTimeTotal = this.calculateAllTimeTotal();
+        console.log('全期間合計:', allTimeTotal);
+        if (dailyTotalCells[cellIndex]) {
+            dailyTotalCells[cellIndex].textContent = allTimeTotal;
+        }
     }
 
     // 習慣の完了状態を切り替え
@@ -499,59 +560,11 @@ class HabitTracker {
         document.getElementById('weeklyRate').textContent = `${weeklyRate}%`;
         document.getElementById('monthlyRate').textContent = `${monthlyRate}%`;
         
-        // 報酬情報を表示
-        this.displayRewardInfo(currentReward, nextReward);
+        // 報酬情報はHTMLで静的に表示されるため削除
         
-        // 各項目ごとの詳細レポートを表示
-        this.displayDetailedReport();
+        // 詳細レポートはrenderDetailReports()で表示されるため削除
     }
 
-    // 詳細レポートの表示
-    displayDetailedReport() {
-        let reportSection = document.getElementById('detailedReport');
-        if (!reportSection) {
-            reportSection = document.createElement('div');
-            reportSection.id = 'detailedReport';
-            reportSection.className = 'detailed-report';
-            document.getElementById('statsView').appendChild(reportSection);
-        }
-
-        let html = '<h3>📊 各項目詳細レポート</h3>';
-        
-        this.habits.forEach(habit => {
-            const stats = this.getHabitStats(habit.id);
-            const bestStreak = this.getBestStreak(habit.id);
-            
-            html += `
-                <div class="habit-report-card">
-                    <div class="habit-report-header">
-                        <span class="habit-report-name">${habit.name}</span>
-                        <span class="habit-report-type ${habit.type}-type">${this.getTypeLabel(habit.type)}</span>
-                    </div>
-                    <div class="habit-report-stats">
-                        <div class="stat-item">
-                            <span class="stat-label">今週の完了率</span>
-                            <span class="stat-value">${stats.weeklyRate}%</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">今月の完了率</span>
-                            <span class="stat-value">${stats.monthlyRate}%</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">現在の連続日数</span>
-                            <span class="stat-value">${stats.currentStreak}日</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">過去最高連続日数</span>
-                            <span class="stat-value best-streak">${bestStreak}日</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        reportSection.innerHTML = html;
-    }
 
     // 習慣の統計を取得
     getHabitStats(habitId) {
@@ -658,40 +671,247 @@ class HabitTracker {
         return null;
     }
 
-    // 報酬情報を表示
-    displayRewardInfo(currentReward, nextReward) {
-        let rewardInfo = document.getElementById('rewardInfo');
-        if (!rewardInfo) {
-            rewardInfo = document.createElement('div');
-            rewardInfo.id = 'rewardInfo';
-            rewardInfo.className = 'reward-info';
-            document.getElementById('statsView').appendChild(rewardInfo);
-        }
+    // 新しいレポートテーブルを生成
+    renderReportTable() {
+        const reportTableContainer = document.getElementById('reportTable');
+        if (!reportTableContainer) return;
 
-        let html = '<h3>🏆 達成報酬</h3>';
+        let html = `
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>習慣名</th>
+                        <th>月完了率</th>
+                        <th>連続日数</th>
+                        <th>最高連続</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        this.habits.forEach((habit, index) => {
+            const stats = this.getHabitStats(habit.id);
+            const bestStreak = this.getBestStreak(habit.id);
+            
+            html += `
+                <tr>
+                    <td class="habit-number">${index + 1}</td>
+                    <td class="habit-name">${habit.shortName}</td>
+                    <td class="stat-value">${stats.monthlyRate}%</td>
+                    <td class="stat-value">${stats.currentStreak}日</td>
+                    <td class="best-streak-value">${bestStreak}日</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                </tbody>
+            </table>
+        `;
+
+        reportTableContainer.innerHTML = html;
+    }
+
+    // 合計値推移グラフを生成
+    renderTotalChart() {
+        const ctx = document.getElementById('totalChart');
+        if (!ctx) return;
+
+        // 過去30日分のデータを取得
+        const chartData = this.getTotalChartData();
         
-        if (currentReward) {
-            html += `
-                <div class="current-reward">
-                    <div class="reward-emoji">${currentReward.emoji}</div>
-                    <div class="reward-title">${currentReward.title}</div>
-                    <div class="reward-description">${currentReward.description}</div>
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: '合計値',
+                    data: chartData.values,
+                    borderColor: '#4A90E2',
+                    backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white'
+                        },
+                        grid: {
+                            color: '#333'
+                        },
+                        min: chartData.labels.length - 14, // 最初は14日分表示
+                        max: chartData.labels.length - 1
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white',
+                            stepSize: 1, // 整数ステップ
+                            callback: function(value) {
+                                return Number.isInteger(value) ? value : null;
+                            }
+                        },
+                        grid: {
+                            color: '#333'
+                        },
+                        beginAtZero: true // 0から開始
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                animation: {
+                    duration: 0
+                },
+                elements: {
+                    point: {
+                        hoverRadius: 6,
+                        radius: 4
+                    }
+                }
+            },
+            plugins: [{
+                id: 'dragPlugin',
+                beforeEvent(chart, args, pluginOptions) {
+                    const self = this;
+                    if (args.event.type === 'mousedown' || args.event.type === 'touchstart') {
+                        chart.dragStartX = args.event.x;
+                        chart.dragStartY = args.event.y;
+                        chart.isDragging = false;
+                    }
+                    
+                    if (args.event.type === 'mousemove' || args.event.type === 'touchmove') {
+                        if (chart.dragStartX !== undefined && chart.dragStartY !== undefined) {
+                            const deltaX = args.event.x - chart.dragStartX;
+                            const deltaY = args.event.y - chart.dragStartY;
+                            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                            
+                            if (distance > 5) {
+                                chart.isDragging = true;
+                                self.handleDrag(chart, deltaX);
+                                chart.dragStartX = args.event.x;
+                                chart.dragStartY = args.event.y;
+                            }
+                        }
+                    }
+                    
+                    if (args.event.type === 'mouseup' || args.event.type === 'touchend') {
+                        chart.dragStartX = undefined;
+                        chart.dragStartY = undefined;
+                        chart.isDragging = false;
+                    }
+                },
+                handleDrag(chart, deltaX) {
+                    const xScale = chart.scales.x;
+                    const range = xScale.max - xScale.min;
+                    const scale = chart.width / range;
+                    const shift = -deltaX / scale;
+                    
+                    const newMin = Math.max(0, xScale.min + shift);
+                    const newMax = Math.min(chart.data.labels.length - 1, xScale.max + shift);
+                    
+                    if (newMax - newMin >= 5) { // 最小表示範囲を5日分に制限
+                        xScale.options.min = newMin;
+                        xScale.options.max = newMax;
+                        chart.update('none');
+                    }
+                }
+            }]
+        });
+    }
+
+    // 合計値推移のデータを取得
+    getTotalChartData() {
+        const labels = [];
+        const values = [];
+        const today = new Date(2025, 8, 20); // 2025年9月20日
+        
+        // 過去30日分のデータを生成
+        let cumulativeTotal = 0;
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dateStr = date.toISOString().split('T')[0];
+            
+            // 日付ラベル（月/日形式）
+            const label = `${date.getMonth() + 1}/${date.getDate()}`;
+            labels.push(label);
+            
+            // その日の完了習慣数を累積合計に加算
+            const dailyCompleted = this.completedHabits[dateStr] ? this.completedHabits[dateStr].length : 0;
+            cumulativeTotal += dailyCompleted;
+            
+            // 整数値のみを保証し、マイナス値を防ぐ
+            const safeValue = Math.max(0, Math.floor(cumulativeTotal));
+            values.push(safeValue);
+            
+            // デバッグ用ログ
+            console.log(`日付: ${dateStr}, 日完了: ${dailyCompleted}, 累積: ${safeValue}`);
+        }
+        
+        return { labels, values };
+    }
+
+    // モンスターを生成
+    renderMonsters() {
+        const monsterGrid = document.getElementById('monsterGrid');
+        if (!monsterGrid) return;
+
+        monsterGrid.innerHTML = '';
+
+        this.habits.forEach((habit, index) => {
+            const totalCount = this.calculateTotalAll(habit.id);
+            const monsterType = this.getMonsterType(totalCount);
+            const bestStreak = this.getBestStreak(habit.id);
+            
+            const monsterCard = document.createElement('div');
+            monsterCard.className = 'monster-card';
+            
+            monsterCard.innerHTML = `
+                <div class="monster-image" style="border-color: ${monsterType.color}; background: ${monsterType.color}20;">
+                    ${monsterType.emoji}
+                </div>
+                <div class="monster-name">${habit.shortName}</div>
+                <div class="monster-description">${monsterType.name}</div>
+                <div class="monster-stats">
+                    <span>合計: ${totalCount}</span>
+                    <span>最高: ${bestStreak}日</span>
                 </div>
             `;
-        }
+            
+            monsterGrid.appendChild(monsterCard);
+        });
+    }
 
-        if (nextReward) {
-            const daysLeft = nextReward.days - this.calculateStreak();
-            html += `
-                <div class="next-reward">
-                    <div class="next-reward-title">次の報酬まで ${daysLeft}日</div>
-                    <div class="next-reward-emoji">${nextReward.emoji}</div>
-                    <div class="next-reward-name">${nextReward.title}</div>
-                </div>
-            `;
-        }
-
-        rewardInfo.innerHTML = html;
+    // 合計値に基づいてモンスタータイプを取得
+    getMonsterType(totalCount) {
+        if (totalCount === 0) return monsterTypes[0];
+        if (totalCount <= 1) return monsterTypes[1];
+        if (totalCount <= 2) return monsterTypes[2];
+        if (totalCount <= 3) return monsterTypes[3];
+        if (totalCount <= 4) return monsterTypes[4];
+        if (totalCount <= 5) return monsterTypes[5];
+        if (totalCount <= 6) return monsterTypes[6];
+        if (totalCount <= 7) return monsterTypes[7];
+        if (totalCount <= 8) return monsterTypes[8];
+        if (totalCount <= 9) return monsterTypes[9];
+        return monsterTypes[10];
     }
 
     // 連続日数の計算
@@ -763,8 +983,7 @@ class HabitTracker {
         // ボトムナビゲーション
         document.getElementById('homeBtn').addEventListener('click', () => this.showHomeView());
         document.getElementById('reportBtn').addEventListener('click', () => this.showReportView());
-        document.getElementById('addHabitBtn').addEventListener('click', () => this.showAddHabit());
-        document.getElementById('historyBtn').addEventListener('click', () => this.showHistoryView());
+        document.getElementById('monsterBtn').addEventListener('click', () => this.showMonsterView());
         document.getElementById('settingsBtn').addEventListener('click', () => this.showSettingsView());
     }
 
@@ -782,20 +1001,20 @@ class HabitTracker {
     showReportView() {
         document.getElementById('weekView').style.display = 'none';
         document.getElementById('statsView').style.display = 'block';
-        this.updateStats();
+        document.getElementById('monsterView').style.display = 'none';
+        this.renderTotalChart();
+        this.renderReportTable();
         this.setActiveNav('reportBtn');
     }
 
-    showAddHabit() {
-        // 習慣追加の実装（将来の拡張）
-        console.log('習慣追加');
+    showMonsterView() {
+        document.getElementById('weekView').style.display = 'none';
+        document.getElementById('statsView').style.display = 'none';
+        document.getElementById('monsterView').style.display = 'block';
+        this.renderMonsters();
+        this.setActiveNav('monsterBtn');
     }
 
-    showHistoryView() {
-        // 履歴ビューの実装（将来の拡張）
-        console.log('履歴ビュー');
-        this.setActiveNav('historyBtn');
-    }
 
     showSettingsView() {
         // 設定ビューの実装（将来の拡張）
@@ -812,6 +1031,8 @@ class HabitTracker {
 
     // ローカルストレージから完了した習慣を読み込み
     loadCompletedHabits() {
+        // 開発用：データをクリアして初期化（コメントアウト）
+        // localStorage.removeItem('habitTrackerData');
         const saved = localStorage.getItem('habitTrackerData');
         return saved ? JSON.parse(saved) : {};
     }

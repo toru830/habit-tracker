@@ -13,15 +13,15 @@ body {
     overflow-x: hidden;
     margin: 0;
     padding: 0;
-    height: 115vh;
+    height: 100vh;
     overflow-y: auto;
 }
 
 .app-container {
     max-width: 480px;
     margin: 0 auto;
-    background: #000;
-    height: 120vh;
+    background: #000 !important;
+    height: 100vh;
     position: relative;
     padding-bottom: 0;
     overflow-y: auto;
@@ -97,18 +97,20 @@ body {
 .main-content {
     flex: 1;
     overflow: hidden;
-    height: calc(120vh - 160px);
+    height: calc(100vh - 120px);
+    background: #000 !important;
 }
 
 /* 週間ビュー */
 .week-view {
     height: 100%;
+    background: #000 !important;
 }
 
 /* 月選択 */
 .month-selector {
     background: #1a1a1a;
-    padding: 15px 20px;
+    padding: 4px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -119,10 +121,10 @@ body {
     background: #333;
     border: none;
     color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    font-size: 18px;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -133,7 +135,7 @@ body {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 500;
 }
 
@@ -165,8 +167,8 @@ body {
     background: #4A90E2;
     font-weight: bold;
     width: auto;
-    padding: 0 12px;
-    font-size: 12px;
+    padding: 2px 8px;
+    font-size: 10px;
 }
 
 .today-btn:hover {
@@ -183,19 +185,20 @@ body {
 .calendar-grid {
     display: flex;
     flex-direction: column;
-    background: #000;
+    background: #000 !important;
     min-height: 100vh;
 }
 
 /* グリッドヘッダー */
 .grid-header {
     display: grid;
-    grid-template-columns: 30px 60px repeat(7, 1fr) 41px 41px;
-    min-height: 32px;
+    grid-template-columns: 30px 50px repeat(7, 1fr) 41px 41px;
+    min-height: 24px;
+    background: #000 !important;
 }
 
 .grid-header .header-cell {
-    height: 32px;
+    height: 24px;
     padding: 1px 2px;
 }
 
@@ -203,10 +206,13 @@ body {
     padding: 12px 8px;
     text-align: center;
     font-size: 12px;
-    color: #666;
+    color: white;
     background: #1a1a1a;
     border-bottom: 1px solid #333;
     border-right: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .no-header {
@@ -254,12 +260,13 @@ body {
 /* 日付行 */
 .date-row {
     display: grid;
-    grid-template-columns: 30px 60px repeat(7, 1fr) 41px 41px;
-    min-height: 32px;
+    grid-template-columns: 30px 50px repeat(7, 1fr) 41px 41px;
+    min-height: 24px;
+    background: #000 !important;
 }
 
 .date-row .date-cell {
-    height: 32px;
+    height: 24px;
     padding: 1px 2px;
 }
 
@@ -310,7 +317,7 @@ body {
 .habits-grid {
     display: flex;
     flex-direction: column;
-    background: #000;
+    background: #000 !important;
 }
 
 /* グループヘッダー行 */
@@ -363,30 +370,67 @@ body {
 
 .habit-row {
     display: grid;
-    grid-template-columns: 30px 60px repeat(7, 1fr) 41px 41px;
+    grid-template-columns: 30px 50px repeat(7, 1fr) 41px 41px;
     border-bottom: 1px solid #333;
+    min-height: 32px;
+    background: #000 !important;
+}
+
+/* No.から5行目までを一つの黒四角で囲む */
+.grid-header,
+.date-row,
+.habit-row:nth-child(1),
+.habit-row:nth-child(2),
+.habit-row:nth-child(3),
+.habit-row:nth-child(4),
+.habit-row:nth-child(5) {
+    border-left: 3px solid #000;
+    border-right: 3px solid #000;
+    background: #1a1a1a;
     min-height: 32px;
 }
 
-/* 上部3行を狭く */
+.grid-header {
+    border-top: 3px solid #000;
+    margin: 2px 0 0 0;
+}
+
+.date-row {
+    margin: 0;
+}
+
 .habit-row:nth-child(1),
 .habit-row:nth-child(2),
-.habit-row:nth-child(3) {
-    min-height: 32px;
+.habit-row:nth-child(3),
+.habit-row:nth-child(4) {
+    margin: 0;
+}
+
+.habit-row:nth-child(5) {
+    border-bottom: 3px solid #000;
+    margin: 0 0 2px 0;
 }
 
 .habit-row:nth-child(1) .habit-cell,
 .habit-row:nth-child(2) .habit-cell,
 .habit-row:nth-child(3) .habit-cell,
+.habit-row:nth-child(4) .habit-cell,
+.habit-row:nth-child(5) .habit-cell,
 .habit-row:nth-child(1) .habit-no-cell,
 .habit-row:nth-child(2) .habit-no-cell,
 .habit-row:nth-child(3) .habit-no-cell,
+.habit-row:nth-child(4) .habit-no-cell,
+.habit-row:nth-child(5) .habit-no-cell,
 .habit-row:nth-child(1) .habit-item-cell,
 .habit-row:nth-child(2) .habit-item-cell,
 .habit-row:nth-child(3) .habit-item-cell,
+.habit-row:nth-child(4) .habit-item-cell,
+.habit-row:nth-child(5) .habit-item-cell,
 .habit-row:nth-child(1) .habit-total-cell,
 .habit-row:nth-child(2) .habit-total-cell,
-.habit-row:nth-child(3) .habit-total-cell {
+.habit-row:nth-child(3) .habit-total-cell,
+.habit-row:nth-child(4) .habit-total-cell,
+.habit-row:nth-child(5) .habit-total-cell {
     height: 32px;
     padding: 1px 2px;
 }
@@ -394,9 +438,10 @@ body {
 /* 日計行 */
 .daily-total-row {
     display: grid;
-    grid-template-columns: 30px 60px repeat(7, 1fr) 41px 41px;
+    grid-template-columns: 30px 50px repeat(7, 1fr) 41px 41px;
     border-bottom: 1px solid #333;
     min-height: 32px;
+    background: #000 !important;
 }
 
 /* 習慣セル */
@@ -433,8 +478,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 60px;
-    max-width: 60px;
+    min-width: 50px;
+    max-width: 50px;
     box-sizing: border-box;
 }
 
@@ -484,7 +529,7 @@ body {
     height: 32px;
     pointer-events: auto;
     border-bottom: 1px solid #333;
-    background: #000;
+    background: #000 !important;
 }
 
 .habit-cell.today {
@@ -501,7 +546,7 @@ body {
 }
 
 .habit-cell.completed {
-    background: #000;
+    background: #000 !important;
 }
 
 .habit-cell.completed::after {
@@ -536,38 +581,158 @@ body {
 .stats-view {
     padding: 20px;
     background: #000;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
 }
 
-.stats-view h2 {
+/* モンスタービュー */
+.monster-view {
+    padding: 20px;
+    background: #000;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+.monster-view h2 {
     color: white;
     margin-bottom: 20px;
     font-size: 24px;
 }
 
-.stats-grid {
+.monster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-.stat-card {
+.monster-card {
     background: #1a1a1a;
     border-radius: 12px;
     padding: 20px;
-    text-align: center;
     border: 1px solid #333;
+    text-align: center;
 }
 
-.stat-card h3 {
-    font-size: 14px;
-    color: #666;
+.monster-image {
+    width: 120px;
+    height: 120px;
+    background: #333;
+    border-radius: 8px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    border: 2px solid #555;
+}
+
+.monster-name {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
     margin-bottom: 8px;
 }
 
-.stat-card p {
-    font-size: 24px;
-    font-weight: bold;
+.monster-description {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.monster-stats {
+    display: flex;
+    justify-content: space-between;
     color: #4A90E2;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* グラフセクション */
+.chart-section {
+    margin: 30px 0;
+}
+
+.chart-section h3 {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.chart-container {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+/* レポートテーブルセクション */
+.report-table-section {
+    margin: 30px 0;
+}
+
+.report-table {
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.report-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-table th,
+.report-table td {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+    border-right: 1px solid #333;
+}
+
+.report-table th {
+    background: #2a2a2a;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.report-table th:last-child,
+.report-table td:last-child {
+    border-right: none;
+}
+
+.report-table tr:last-child td {
+    border-bottom: none;
+}
+
+.report-table td {
+    color: white;
+    font-size: 12px;
+}
+
+.report-table .habit-number {
+    color: white;
+    font-weight: bold;
+    width: 30px;
+}
+
+.report-table .habit-name {
+    text-align: left;
+    padding-left: 12px;
+    width: 120px;
+    color: white;
+}
+
+.report-table .stat-value {
+    color: white;
+    font-weight: bold;
+}
+
+.report-table .best-streak-value {
+    color: white;
+    font-weight: bold;
 }
 
 /* ボトムナビゲーション */
@@ -833,56 +998,70 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-/* 6-8行目のグループ枠線 */
-.habit-row:nth-child(7) {
-    border-top: 3px solid #ffd700;
-    border-left: 3px solid #ffd700;
-    border-right: 3px solid #ffd700;
+/* 6-8行目のグループ枠線（グレー） */
+.habit-row:nth-child(6) {
+    border-top: 3px solid #666;
+    border-left: 3px solid #666;
+    border-right: 3px solid #666;
     margin: 2px 0 0 0;
+    background: #1a1a1a;
+    min-height: 32px;
+}
+
+.habit-row:nth-child(7) {
+    border-left: 3px solid #666;
+    border-right: 3px solid #666;
+    margin: 0;
+    background: #1a1a1a;
+    min-height: 32px;
 }
 
 .habit-row:nth-child(8) {
-    border-left: 3px solid #ffd700;
-    border-right: 3px solid #ffd700;
-    margin: 0;
-}
-
-.habit-row:nth-child(9) {
-    border-bottom: 3px solid #ffd700;
-    border-left: 3px solid #ffd700;
-    border-right: 3px solid #ffd700;
+    border-bottom: 3px solid #666;
+    border-left: 3px solid #666;
+    border-right: 3px solid #666;
     margin: 0 0 2px 0;
+    background: #1a1a1a;
+    min-height: 32px;
 }
 
-/* 9-15行目のグループ枠線 */
-.habit-row:nth-child(10) {
-    border-top: 3px solid #28a745;
-    border-left: 3px solid #28a745;
-    border-right: 3px solid #28a745;
+
+/* 9-15行目のグループ枠線（濃い緑） */
+.habit-row:nth-child(9) {
+    border-top: 3px solid #1a5f1a;
+    border-left: 3px solid #1a5f1a;
+    border-right: 3px solid #1a5f1a;
     margin: 2px 0 0 0;
+    background: #1a1a1a;
 }
 
+.habit-row:nth-child(10),
 .habit-row:nth-child(11),
 .habit-row:nth-child(12),
 .habit-row:nth-child(13),
 .habit-row:nth-child(14) {
-    border-left: 3px solid #28a745;
-    border-right: 3px solid #28a745;
+    border-left: 3px solid #1a5f1a;
+    border-right: 3px solid #1a5f1a;
     margin: 0;
+    background: #1a1a1a;
 }
 
 .habit-row:nth-child(15) {
-    border-bottom: 3px solid #28a745;
-    border-left: 3px solid #28a745;
-    border-right: 3px solid #28a745;
+    border-bottom: 3px solid #1a5f1a;
+    border-left: 3px solid #1a5f1a;
+    border-right: 3px solid #1a5f1a;
     margin: 0 0 2px 0;
+    background: #1a1a1a;
 }
 
 
 
-/* 日計行は緑枠不要 */
+/* 日計行は黒太枠で囲む */
 .daily-total-row {
     margin: 2px 0 0 0;
+    border: 3px solid #000;
+    border-radius: 4px;
+    background: #1a1a1a;
 }
 
 /* 週計の数字の色分け */
@@ -924,31 +1103,34 @@ body {
         box-shadow: none;
         max-width: 100%;
         height: 100vh;
+        background: #000 !important;
     }
     
     .main-content {
-        height: calc(100vh - 120px);
+        height: calc(100vh - 80px);
+        background: #000 !important;
     }
     
     /* 週間ナビゲーション */
     .week-navigation {
-        padding: 8px 10px;
+        padding: 4px 8px;
+        background: #000 !important;
     }
     
     .week-nav-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
     }
     
     .week-display {
-        font-size: 14px;
-        padding: 0 8px;
+        font-size: 12px;
+        padding: 0 6px;
     }
     
     .today-btn {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 4px 8px;
+        font-size: 10px;
     }
     
     /* グリッドの調整 */
@@ -956,7 +1138,7 @@ body {
     .date-row,
     .habit-row,
     .daily-total-row {
-        grid-template-columns: 25px 50px repeat(7, 1fr) 35px 35px;
+        grid-template-columns: 25px 45px repeat(7, 1fr) 35px 35px;
     }
     
     /* セルのサイズ調整 */
@@ -965,18 +1147,25 @@ body {
         max-width: 25px;
         font-size: 10px;
         height: 28px;
+        justify-content: center;
+        text-align: center;
+        background: #1a1a1a;
     }
     
     .habit-item-cell {
-        min-width: 50px;
-        max-width: 50px;
+        min-width: 45px;
+        max-width: 45px;
         font-size: 9px;
         height: 28px;
+        justify-content: center;
+        text-align: center;
+        background: #1a1a1a;
     }
     
     .habit-cell {
         height: 28px;
         font-size: 10px;
+        background: #000;
     }
     
     .habit-total-cell {
@@ -984,27 +1173,40 @@ body {
         max-width: 35px;
         font-size: 10px;
         height: 28px;
+        background: #1a1a1a;
     }
     
     .header-cell {
         font-size: 9px;
-        height: 28px;
+        height: 20px;
+        justify-content: center;
+        text-align: center;
+        color: white;
     }
     
     .date-cell {
         font-size: 10px;
-        height: 28px;
+        height: 20px;
     }
     
     /* 行の高さ調整 */
     .grid-header,
     .date-row {
-        min-height: 28px;
+        min-height: 20px;
     }
     
     .habit-row,
     .daily-total-row {
         min-height: 28px;
+    }
+    
+    /* グリッド全体の背景 */
+    .calendar-grid {
+        background: #000 !important;
+    }
+    
+    .habits-grid {
+        background: #000 !important;
     }
     
     /* カレンダーモーダル */
@@ -1034,43 +1236,67 @@ body {
     .date-row,
     .habit-row,
     .daily-total-row {
-        grid-template-columns: 22px 45px repeat(7, 1fr) 30px 30px;
+        grid-template-columns: 22px 40px repeat(7, 1fr) 30px 30px;
     }
     
     .habit-no-cell {
         min-width: 22px;
         max-width: 22px;
         font-size: 9px;
+        justify-content: center;
+        text-align: center;
+        background: #1a1a1a;
     }
     
     .habit-item-cell {
-        min-width: 45px;
-        max-width: 45px;
+        min-width: 40px;
+        max-width: 40px;
         font-size: 8px;
+        justify-content: center;
+        text-align: center;
+        background: #1a1a1a;
     }
     
     .habit-total-cell {
         min-width: 30px;
         max-width: 30px;
         font-size: 9px;
+        background: #1a1a1a;
     }
     
     .header-cell {
         font-size: 8px;
+        justify-content: center;
+        text-align: center;
+        color: white;
     }
     
     .date-cell {
         font-size: 9px;
     }
     
+    .habit-cell {
+        background: #000;
+    }
+    
     .week-display {
-        font-size: 12px;
-        padding: 0 6px;
+        font-size: 10px;
+        padding: 0 4px;
     }
     
     .today-btn {
-        padding: 5px 10px;
-        font-size: 11px;
+        padding: 3px 6px;
+        font-size: 9px;
+    }
+    
+    .week-navigation {
+        padding: 2px 6px;
+    }
+    
+    .week-nav-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
     }
 }
 
@@ -1097,11 +1323,11 @@ body {
 }
 
 .no-habit-cell {
-    background: #000;
+    background: #000 !important;
 }
 
 .no-habit-cell.completed {
-    background: #000;
+    background: #000 !important;
 }
 
 .no-habit-cell.completed::after {
@@ -1118,11 +1344,11 @@ body {
 }
 
 .supplement-habit-cell {
-    background: #000;
+    background: #000 !important;
 }
 
 .supplement-habit-cell.completed {
-    background: #000;
+    background: #000 !important;
 }
 
 .supplement-habit-cell.completed::after {
@@ -1391,7 +1617,7 @@ body {
     }
     
     .no-habit-cell {
-        background: white;
+        background: #000 !important;
         border-left-color: #ff6b6b;
     }
     
@@ -1401,7 +1627,7 @@ body {
     }
     
     .supplement-habit-cell {
-        background: white;
+        background: #000 !important;
         border-left-color: #4A90E2;
     }
     
